@@ -1,0 +1,30 @@
+from django.db import models
+from common.models import CommonModel
+
+# Create your models here.
+
+
+class Review(CommonModel):
+    user = models.ForeignKey(
+        "users.User",
+        on_delete=models.CASCADE,
+    )
+    boarder = models.ForeignKey(
+        "boarders.Boarder",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="reviews",
+    )
+    sitter = models.ForeignKey(
+        "sitters.Sitter",
+        null=True,
+        blank=True,
+        on_delete=models.CASCADE,
+        related_name="reviews",
+    )
+    payload = models.TextField()
+    rating = models.PositiveIntegerField()
+
+    def __str__(self):
+        return f"{self.user} / {self.rating}⭐"

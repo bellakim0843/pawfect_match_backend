@@ -1,0 +1,25 @@
+[tool.poetry]
+name = "pawfect-match-backend"
+version = "0.1.0"
+description = ""
+authors = ["bellakim0843 <bellakim0843@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+packages = [{include = "pawfect_match_backend"}]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+django = "^4.2.3"
+djangorestframework = "^3.14.0"
+strawberry-graphql = {extras = ["debug-server"], version = "^0.194.4"}
+strawberry-graphql-django = "^0.10.5"
+pyjwt = "^2.7.0"
+django-environ = "^0.10.0"
+environ = "^1.0"
+django-cors-headers = "^4.2.0"
+requests = "^2.31.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
