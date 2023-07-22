@@ -18,13 +18,13 @@ class Booking(CommonModel):
         on_delete=models.CASCADE,
         related_name="bookings",
     )
-    boarder = models.ForeignKey(
-        "boarders.Boarder",
-        null=True,
-        blank=True,
-        on_delete=models.SET_NULL,
-        related_name="bookings",
-    )
+    # boarder = models.ForeignKey(
+    #     "boarders.Boarder",
+    #     null=True,
+    #     blank=True,
+    #     on_delete=models.SET_NULL,
+    #     related_name="bookings",
+    # )
     sitter = models.ForeignKey(
         "sitters.Sitter",
         null=True,
@@ -33,10 +33,10 @@ class Booking(CommonModel):
         related_name="bookings",
     )
 
-    daycare_day = models.DateField(
-        null=True,
-        blank=True,
-    )
+    # daycare_day = models.DateField(
+    #     null=True,
+    #     blank=True,
+    # )
 
     check_in = models.DateField(
         null=True,

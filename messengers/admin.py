@@ -19,7 +19,7 @@ class MessageAdmin(admin.ModelAdmin):
     list_display = (
         "chat_text",
         "chat_user",
-        "chat_boarder",
+        "chat_sitter",
         "created_at",
     )
 

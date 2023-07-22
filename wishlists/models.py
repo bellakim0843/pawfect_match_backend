@@ -5,11 +5,11 @@ from common.models import CommonModel
 # Create your models here.
 class Wishlist(CommonModel):
     name = models.CharField(max_length=150)
-    boarders = models.ManyToManyField(
-        "boarders.Boarder",
-        null=True,
-        blank=True,
-    )
+    # boarders = models.ManyToManyField(
+    #     "boarders.Boarder",
+    #     null=True,
+    #     blank=True,
+    # )
     sitters = models.ManyToManyField(
         "sitters.Sitter",
         null=True,

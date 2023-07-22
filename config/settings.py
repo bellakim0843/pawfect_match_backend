@@ -46,7 +46,6 @@ THIRD_PARTY_APPS = [
 
 CUSTOM_APPS = [
     "bookings.apps.BookingsConfig",
-    "boarders.apps.BoardersConfig",
     "categories.apps.CategoriesConfig",
     "common.apps.CommonConfig",
     "sitters.apps.SittersConfig",

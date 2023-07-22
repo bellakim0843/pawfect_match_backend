@@ -26,7 +26,7 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("sitters/", include("sitters.urls")),
     path("categories/", include("categories.urls")),
-    path("boarders/", include("boarders.urls")),
+    # path("boarders/", include("boarders.urls")),
     path("medias/", include("medias.urls")),
     path("wishlists/", include("wishlists.urls")),
     path("users/", include("users.urls")),

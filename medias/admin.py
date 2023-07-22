@@ -8,11 +8,11 @@ from .models import Photo
 class PhotoAdmin(admin.ModelAdmin):
     list_display = (
         "file",
-        "boarder",
+        # "boarder",
         "sitter",
     )
 
     list_filter = (
-        "boarder",
+        # "boarder",
         "sitter",
     )

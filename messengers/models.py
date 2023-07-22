@@ -21,7 +21,7 @@ class Message(CommonModel):
         on_delete=models.SET_NULL,
         related_name="messengers",
     )
-    chat_boarder = models.ForeignKey(
+    chat_sitter = models.ForeignKey(
         "messengers.Chatroom",
         on_delete=models.CASCADE,
         related_name="messengers",

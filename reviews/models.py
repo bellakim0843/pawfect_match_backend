@@ -9,13 +9,13 @@ class Review(CommonModel):
         "users.User",
         on_delete=models.CASCADE,
     )
-    boarder = models.ForeignKey(
-        "boarders.Boarder",
-        null=True,
-        blank=True,
-        on_delete=models.SET_NULL,
-        related_name="reviews",
-    )
+    # boarder = models.ForeignKey(
+    #     "boarders.Boarder",
+    #     null=True,
+    #     blank=True,
+    #     on_delete=models.SET_NULL,
+    #     related_name="reviews",
+    # )
     sitter = models.ForeignKey(
         "sitters.Sitter",
         null=True,

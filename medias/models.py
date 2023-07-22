@@ -9,13 +9,13 @@ class Photo(CommonModel):
         max_length=140,
     )
 
-    boarder = models.ForeignKey(
-        "boarders.Boarder",
-        on_delete=models.CASCADE,
-        null=True,
-        blank=True,
-        related_name="photos",
-    )
+    # boarder = models.ForeignKey(
+    #     "boarders.Boarder",
+    #     on_delete=models.CASCADE,
+    #     null=True,
+    #     blank=True,
+    #     related_name="photos",
+    # )
     sitter = models.ForeignKey(
         "sitters.Sitter",
         on_delete=models.CASCADE,

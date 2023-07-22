@@ -1,5 +1,3 @@
-import requests
-from django.conf import settings
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 from rest_framework.status import HTTP_200_OK
@@ -24,9 +22,7 @@ class PhotoDetail(APIView):
 
     def delete(self, request, pk):
         photo = self.get_object(pk)
-        if (photo.sitter and photo.sitter.account != request.user) or (
-            photo.boarder and photo.boarder.boarder_account != request.user
-        ):
+        if photo.sitter and photo.sitter.account != request.user:
             raise PermissionDenied()
         photo.delete()
         return Response(status=HTTP_200_OK)
