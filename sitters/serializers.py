@@ -71,6 +71,7 @@ class SitterListSerializer(serializers.ModelSerializer):
             "price",
             "rating",
             "is_account",
+            "category",
         )
 
     def get_rating(self, sitter):
