@@ -40,18 +40,15 @@ class SitterDetailSerializer(serializers.ModelSerializer):
 
     def get_is_account(self, sitter):
         request = self.context.get("request")
-        if request:
-            return sitter.account == request.user
-        return False
+        return sitter.account == request.user
 
     def get_is_liked(self, sitter):
         request = self.context.get("request")
-        if request:
-            if request.user.is_authenticated:
-                return Wishlist.objects.filter(
-                    user=request.user,
-                    sitters__pk=sitter.pk,
-                ).exists()
+        if request.user.is_authenticated:
+            return Wishlist.objects.filter(
+                user=request.user,
+                sitters__pk=sitter.pk,
+            ).exists()
         return False
 
 

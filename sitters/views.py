@@ -1,16 +1,21 @@
+import time
+from django.shortcuts import get_object_or_404
+
+from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.status import (
     HTTP_201_CREATED,
     HTTP_400_BAD_REQUEST,
     HTTP_204_NO_CONTENT,
+    HTTP_200_OK,
 )
 from rest_framework.exceptions import NotFound, ParseError, PermissionDenied
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from django.db import transaction
 from django.conf import settings
 from django.utils import timezone
-import time
+
 
 from .models import Service, Sitter
 from categories.models import Category
@@ -19,6 +24,7 @@ from reviews.serializers import ReviewSerializer
 from medias.serializers import PhotoSerializer
 from bookings.models import Booking
 from bookings.serializers import PublicBookingSerializer, CreateSitterBookingSerializer
+from .serializers import SitterDetailSerializer
 
 
 class Services(APIView):
@@ -133,12 +139,13 @@ class SitterDetail(APIView):
 
     def put(self, request, pk):
         sitter = self.get_object(pk)
+
         if sitter.account != request.user:
             raise PermissionDenied()
         serializer = SitterDetailSerializer(sitter, data=request.data, partial=True)
         if serializer.is_valid():
             category_pk = request.data.get("category")
-            if not category_pk:
+            if category_pk is None:
                 raise ParseError("Category is required")
             try:
                 category = Category.objects.get(pk=category_pk)
@@ -152,20 +159,19 @@ class SitterDetail(APIView):
                         account=request.user, category=category
                     )
                     services = request.data.get("services")
-                    if services:
+                    if services is not None:
                         updated_sitter.services.clear()
-                        for service_pk in services:
-                            service = Service.objects.get(pk=service_pk)
-                            updated_sitter.services.add(service)
-                    serializer = SitterDetailSerializer(updated_sitter)
-                    return Response(serializer.data)
+                    for service_pk in services:
+                        service = Service.objects.get(pk=service_pk)
+                        updated_sitter.services.add(service)
+                serializer = serializers.SitterDetailSerializer(
+                    updated_sitter, context={"request": request}
+                )
+                return Response(serializer.data)
             except:
                 raise ParseError("Can't update sitter")
         else:
-            return Response(
-                serializer.errors,
-                status=HTTP_400_BAD_REQUEST,
-            )
+            return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
 
     def delete(self, request, pk):
         sitter = self.get_object(pk)
@@ -240,10 +246,7 @@ class SitterBookings(APIView):
     permission_classes = [IsAuthenticatedOrReadOnly]
 
     def get_object(self, pk):
-        try:
-            return Sitter.objects.get(pk=pk)
-        except:
-            raise NotFound()
+        return get_object_or_404(Sitter, pk=pk)
 
     def get(self, request, pk):
         sitter = self.get_object(pk)
@@ -251,7 +254,7 @@ class SitterBookings(APIView):
         bookings = Booking.objects.filter(
             sitter=sitter,
             kind=Booking.BookingKindChoices.SITTER,
-            daycare_day__gt=now,  # Check_in__gt=now ->checkin
+            check_in__gte=now,
         )
         serializer = PublicBookingSerializer(bookings, many=True)
         return Response(serializer.data)
@@ -263,17 +266,28 @@ class SitterBookings(APIView):
             context={"sitter": sitter},
         )
         if serializer.is_valid():
+            # Ensure that the user making the request is authenticated
+            if not request.user.is_authenticated:
+                return Response(
+                    {"detail": "Authentication credentials were not provided."},
+                    status=status.HTTP_401_UNAUTHORIZED,
+                )
+
             booking = serializer.save(
                 sitter=sitter,
-                user=request.user,
                 kind=Booking.BookingKindChoices.SITTER,
+                user=request.user,
             )
             serializer = PublicBookingSerializer(booking)
-            return Response(serializer.data)
+            return Response(
+                serializer.data,
+                status=status.HTTP_201_CREATED,
+            )
         else:
+            # Return detailed errors in case of validation failure
             return Response(
                 serializer.errors,
-                status=HTTP_400_BAD_REQUEST,
+                status=status.HTTP_400_BAD_REQUEST,
             )
 
 

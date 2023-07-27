@@ -8,9 +8,7 @@ class BookingAdmin(admin.ModelAdmin):
     list_display = (
         "kind",
         "user",
-        # "boarder",
         "sitter",
-        # "daycare_day",
         "check_in",
         "check_out",
         "pets",
