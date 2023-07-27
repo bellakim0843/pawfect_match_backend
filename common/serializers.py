@@ -10,6 +10,7 @@ class BookingSitterSerializer(serializers.ModelSerializer):
     class Meta:
         model = Sitter
         fields = (
+            "pk",
             "name",
             "country",
             "city",

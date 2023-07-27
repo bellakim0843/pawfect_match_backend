@@ -6,6 +6,8 @@ from users.serializers import TinyUserSerializer
 
 
 class PublicBookingSerializer(serializers.ModelSerializer):
+    user = TinyUserSerializer(read_only=True)
+
     class Meta:
         model = Booking
         fields = (
@@ -13,6 +15,7 @@ class PublicBookingSerializer(serializers.ModelSerializer):
             "check_in",
             "check_out",
             "pets",
+            "user",
         )
 
 
@@ -71,7 +74,7 @@ class UserBookingSerializer(serializers.ModelSerializer):
         )
 
 
-class RoomBookingSerializer(serializers.ModelSerializer):
+class SitterBookingSerializer(serializers.ModelSerializer):
     user = TinyUserSerializer(read_only=True)
 
     class Meta:
@@ -81,5 +84,5 @@ class RoomBookingSerializer(serializers.ModelSerializer):
             "check_in",
             "check_out",
             "pets",
-            "users",
+            "user",
         )

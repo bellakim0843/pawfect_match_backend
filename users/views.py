@@ -13,6 +13,8 @@ from rest_framework import status
 from rest_framework.exceptions import ParseError, NotFound
 from rest_framework.permissions import IsAuthenticated
 from .models import User
+from bookings.models import Booking
+from bookings.serializers import UserBookingSerializer
 from .serializers import UserSerializer, PrivateUserSerializer
 from users.models import User
 from . import serializers
@@ -181,3 +183,21 @@ class SignUp(APIView):
             return Response({"ok": "Welcome!"})
         except ParseError:
             return Response(status=status.HTTP_400_BAD_REQUEST)
+
+
+class UserBookedSitters(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        user_booking_lists = Booking.objects.filter(
+            user=request.user,
+            kind=Booking.BookingKindChoices.SITTER,
+        )
+        print(user_booking_lists)
+        serializer = UserBookingSerializer(
+            user_booking_lists,
+            context={"request": request},
+            many=True,
+        )
+        print(serializer.data)
+        return Response(serializer.data)

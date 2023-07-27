@@ -11,7 +11,7 @@ from rest_framework.status import (
     HTTP_200_OK,
 )
 from rest_framework.exceptions import NotFound, ParseError, PermissionDenied
-from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 from django.db import transaction
 from django.conf import settings
 from django.utils import timezone
@@ -23,7 +23,11 @@ from . import serializers
 from reviews.serializers import ReviewSerializer
 from medias.serializers import PhotoSerializer
 from bookings.models import Booking
-from bookings.serializers import PublicBookingSerializer, CreateSitterBookingSerializer
+from bookings.serializers import (
+    PublicBookingSerializer,
+    CreateSitterBookingSerializer,
+    SitterBookingSerializer,
+)
 from .serializers import SitterDetailSerializer
 
 
@@ -281,7 +285,7 @@ class SitterBookings(APIView):
             serializer = PublicBookingSerializer(booking)
             return Response(
                 serializer.data,
-                status=status.HTTP_201_CREATED,
+                status=HTTP_200_OK,
             )
         else:
             # Return detailed errors in case of validation failure
