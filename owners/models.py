@@ -8,15 +8,25 @@ class Owner(CommonModel):
         FEMALE = "female", "Female"
         NOT_SPECIFIED = "not_specified", "Prefer not to say"
 
-    profile_photo = models.ImageField(blank=True)
     name = models.CharField(max_length=150, default="")
     gender = models.CharField(
         max_length=30, choices=GenderChoices.choices, default=GenderChoices.MALE
     )
+
+    # 여기부터 추가
+
+    pet = models.ForeignKey(
+        "owners.Pet",
+        null=True,
+        blank=True,
+        on_delete=models.CASCADE,
+        related_name="owners_pet",
+    )
+
     account = models.OneToOneField(
         "users.User",
         on_delete=models.CASCADE,
-        related_name="owner",
+        related_name="owners",
     )
 
     def __str__(self):
@@ -27,20 +37,12 @@ class Owner(CommonModel):
 
 
 class Pet(CommonModel):
-    class SpeciesChoices(models.TextChoices):
-        DOG = "dog", "Dog"
-        CAT = "cat", "Cat"
-        ETC = "etc", "Other"
-
     class SexChoices(models.TextChoices):
         MALE = "male", "Male"
         FEMALE = "female", "Female"
 
     petname = models.CharField(max_length=80)
-    species = models.CharField(
-        max_length=20,
-        choices=SpeciesChoices.choices,
-    )
+
     sex = models.CharField(
         max_length=20,
         choices=SexChoices.choices,

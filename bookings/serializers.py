@@ -2,11 +2,14 @@ from django.utils import timezone
 from rest_framework import serializers
 from .models import Booking
 from common.serializers import BookingSitterSerializer
-from users.serializers import TinyUserSerializer
+from users.serializers import TinyUserSerializer, UserSerializer
+from owners.serializers import OwnerSerializer, PetSerializer
 
 
 class PublicBookingSerializer(serializers.ModelSerializer):
-    user = TinyUserSerializer(read_only=True)
+    user = UserSerializer(read_only=True)
+    owner = OwnerSerializer(read_only=True)
+    pet = PetSerializer(read_only=True)
 
     class Meta:
         model = Booking
@@ -14,8 +17,10 @@ class PublicBookingSerializer(serializers.ModelSerializer):
             "pk",
             "check_in",
             "check_out",
-            "pets",
             "user",
+            "owner",
+            "pet",
+            "pets",
         )
 
 

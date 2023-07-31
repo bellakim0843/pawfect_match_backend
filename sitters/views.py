@@ -11,7 +11,7 @@ from rest_framework.status import (
     HTTP_200_OK,
 )
 from rest_framework.exceptions import NotFound, ParseError, PermissionDenied
-from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from django.db import transaction
 from django.conf import settings
 from django.utils import timezone
@@ -23,11 +23,7 @@ from . import serializers
 from reviews.serializers import ReviewSerializer
 from medias.serializers import PhotoSerializer
 from bookings.models import Booking
-from bookings.serializers import (
-    PublicBookingSerializer,
-    CreateSitterBookingSerializer,
-    SitterBookingSerializer,
-)
+from bookings.serializers import PublicBookingSerializer, CreateSitterBookingSerializer
 from .serializers import SitterDetailSerializer
 
 
@@ -41,9 +37,14 @@ class Services(APIView):
         serializer = serializers.ServiceSerializer(data=request.data)
         if serializer.is_valid():
             service = serializer.save()
-            return Response(serializer.data, status=HTTP_201_CREATED)
+            return Response(
+                serializers.ServiceSerializer(service).data,
+            )
         else:
-            return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
+            return Response(
+                serializer.errors,
+                status=HTTP_400_BAD_REQUEST,
+            )
 
 
 class ServiceDetail(APIView):
@@ -65,9 +66,14 @@ class ServiceDetail(APIView):
         )
         if serializer.is_valid():
             updated_service = serializer.save()
-            return Response(serializer.data)
+            return Response(
+                serializers.ServiceSerializer(updated_service).data,
+            )
         else:
-            return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
+            return Response(
+                serializer.errors,
+                status=HTTP_400_BAD_REQUEST,
+            )
 
     def delete(self, request, pk):
         service = self.get_object(pk)
@@ -143,13 +149,12 @@ class SitterDetail(APIView):
 
     def put(self, request, pk):
         sitter = self.get_object(pk)
-
         if sitter.account != request.user:
             raise PermissionDenied()
         serializer = SitterDetailSerializer(sitter, data=request.data, partial=True)
         if serializer.is_valid():
             category_pk = request.data.get("category")
-            if category_pk is None:
+            if not category_pk:
                 raise ParseError("Category is required")
             try:
                 category = Category.objects.get(pk=category_pk)
@@ -163,19 +168,20 @@ class SitterDetail(APIView):
                         account=request.user, category=category
                     )
                     services = request.data.get("services")
-                    if services is not None:
+                    if services:
                         updated_sitter.services.clear()
-                    for service_pk in services:
-                        service = Service.objects.get(pk=service_pk)
-                        updated_sitter.services.add(service)
-                serializer = serializers.SitterDetailSerializer(
-                    updated_sitter, context={"request": request}
-                )
-                return Response(serializer.data)
+                        for service_pk in services:
+                            service = Service.objects.get(pk=service_pk)
+                            updated_sitter.services.add(service)
+                    serializer = SitterDetailSerializer(updated_sitter)
+                    return Response(serializer.data)
             except:
                 raise ParseError("Can't update sitter")
         else:
-            return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
+            return Response(
+                serializer.errors,
+                status=HTTP_400_BAD_REQUEST,
+            )
 
     def delete(self, request, pk):
         sitter = self.get_object(pk)
@@ -285,7 +291,7 @@ class SitterBookings(APIView):
             serializer = PublicBookingSerializer(booking)
             return Response(
                 serializer.data,
-                status=HTTP_200_OK,
+                status=status.HTTP_201_CREATED,
             )
         else:
             # Return detailed errors in case of validation failure

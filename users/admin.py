@@ -42,3 +42,14 @@ class UserAdmin(UserAdmin):
         "is_sitter",
         "avatar",
     )
+
+
+# @admin.register(Pet)
+# class PetAdmin(admin.ModelAdmin):
+#     list_display = (
+#         "petname",
+#         "sex",
+#         "age",
+#         "weight",
+#         "neutering",
+#     )

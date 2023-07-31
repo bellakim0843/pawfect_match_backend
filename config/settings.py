@@ -54,7 +54,6 @@ CUSTOM_APPS = [
     "owners.apps.OwnersConfig",
     "users.apps.UsersConfig",
     "reviews.apps.ReviewsConfig",
-    "wishlists.apps.WishlistsConfig",
 ]
 
 SYSTEM_APPS = [

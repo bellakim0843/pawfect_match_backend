@@ -4,7 +4,6 @@ from users.serializers import TinyUserSerializer
 from reviews.serializers import ReviewSerializer
 from categories.serializers import CategorySerializer
 from medias.serializers import PhotoSerializer
-from wishlists.models import Wishlist
 
 
 class ServiceSerializer(serializers.ModelSerializer):
@@ -28,7 +27,6 @@ class SitterDetailSerializer(serializers.ModelSerializer):
     )
     rating = serializers.SerializerMethodField()
     is_account = serializers.SerializerMethodField()
-    is_liked = serializers.SerializerMethodField()
     photos = PhotoSerializer(many=True, read_only=True)  # Add this line
 
     class Meta:
@@ -40,15 +38,8 @@ class SitterDetailSerializer(serializers.ModelSerializer):
 
     def get_is_account(self, sitter):
         request = self.context.get("request")
-        return sitter.account == request.user
-
-    def get_is_liked(self, sitter):
-        request = self.context.get("request")
-        if request.user.is_authenticated:
-            return Wishlist.objects.filter(
-                user=request.user,
-                sitters__pk=sitter.pk,
-            ).exists()
+        if request:
+            return sitter.account == request.user
         return False
 
 

@@ -17,10 +17,27 @@ class Booking(CommonModel):
         "users.User",
         on_delete=models.CASCADE,
         related_name="bookings",
+        default=1,
     )
 
     sitter = models.ForeignKey(
         "sitters.Sitter",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="bookings",
+    )
+
+    owner = models.ForeignKey(
+        "owners.Owner",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="bookings",
+    )
+
+    pet = models.ForeignKey(
+        "owners.Pet",
         null=True,
         blank=True,
         on_delete=models.SET_NULL,
@@ -39,6 +56,10 @@ class Booking(CommonModel):
     pets = models.PositiveIntegerField(
         default=1,
     )
+
+    # pet = models.ForeignKey(
+    #     "users.Pet", on_delete=models.SET_NULL, null=True, blank=True
+    # )
 
     def __str__(self) -> str:
         return f"{self.kind.title()} Booking for: {self.user}"

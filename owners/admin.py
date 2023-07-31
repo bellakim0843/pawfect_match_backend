@@ -10,7 +10,6 @@ class OwnerAdmin(admin.ModelAdmin):
     list_display = (
         "name",
         "gender",
-        "profile_photo",
         "account",
         "total_pets",
     )
@@ -31,7 +30,6 @@ class OwnerAdmin(admin.ModelAdmin):
 class PetAdmin(admin.ModelAdmin):
     list_display = (
         "petname",
-        "species",
         "sex",
         "age",
         "weight",
@@ -39,7 +37,6 @@ class PetAdmin(admin.ModelAdmin):
     )
 
     list_filter = (
-        "species",
         "age",
         "weight",
         "neutering",

@@ -7,8 +7,9 @@ from .models import Booking
 class BookingAdmin(admin.ModelAdmin):
     list_display = (
         "kind",
-        "user",
         "sitter",
+        "owner",
+        "pet",
         "check_in",
         "check_out",
         "pets",
