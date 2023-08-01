@@ -20,7 +20,6 @@ from django.conf.urls.static import static
 from django.conf import settings
 from strawberry.django.views import GraphQLView
 from .schema import schema
-from owners.views import Pets
 
 
 urlpatterns = [
@@ -31,5 +30,5 @@ urlpatterns = [
     path("medias/", include("medias.urls")),
     path("users/", include("users.urls")),
     path("graphql", GraphQLView.as_view(schema=schema)),
-    path("pets/", Pets.as_view(schema=schema)),
+    # path("pets/", Pets.as_view(schema=schema)),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

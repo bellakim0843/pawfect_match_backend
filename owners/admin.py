@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Owner, Pet
+from .models import Owner
 
 # admin action
 
@@ -9,9 +9,10 @@ from .models import Owner, Pet
 class OwnerAdmin(admin.ModelAdmin):
     list_display = (
         "name",
-        "gender",
         "account",
-        "total_pets",
+        "pet_name",
+        "pet_gender",
+        "pet_age",
     )
 
     list_filter = (
@@ -26,18 +27,18 @@ class OwnerAdmin(admin.ModelAdmin):
     )
 
 
-@admin.register(Pet)
-class PetAdmin(admin.ModelAdmin):
-    list_display = (
-        "petname",
-        "sex",
-        "age",
-        "weight",
-        "neutering",
-    )
+# @admin.register(Pet)
+# class PetAdmin(admin.ModelAdmin):
+#     list_display = (
+#         "petname",
+#         "sex",
+#         "age",
+#         "weight",
+#         "neutering",
+#     )
 
-    list_filter = (
-        "age",
-        "weight",
-        "neutering",
-    )
+#     list_filter = (
+#         "age",
+#         "weight",
+#         "neutering",
+#     )

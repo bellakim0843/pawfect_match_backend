@@ -9,7 +9,6 @@ class BookingAdmin(admin.ModelAdmin):
         "kind",
         "sitter",
         "owner",
-        "pet",
         "check_in",
         "check_out",
         "pets",

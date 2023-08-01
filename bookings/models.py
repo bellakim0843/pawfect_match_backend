@@ -36,13 +36,13 @@ class Booking(CommonModel):
         related_name="bookings",
     )
 
-    pet = models.ForeignKey(
-        "owners.Pet",
-        null=True,
-        blank=True,
-        on_delete=models.SET_NULL,
-        related_name="bookings",
-    )
+    # pet = models.ForeignKey(
+    #     "owners.Pet",
+    #     null=True,
+    #     blank=True,
+    #     on_delete=models.SET_NULL,
+    #     related_name="bookings",
+    # )
 
     check_in = models.DateField(
         null=True,
