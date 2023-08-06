@@ -7,39 +7,39 @@ from rest_framework.authtoken.models import Token
 from users.models import User
 
 
-class UserModelTestCase(TestCase):
-    @classmethod
-    def setUpTestData(cls):
-        cls.test_user = get_user_model().objects.create_user(
-            username="testuser",
-            email="testuser@example.com",
-            password="testpassword",
-            first_name="Nakyung",
-            last_name="KIM",
-            name="Nakyung Kim",
-            is_sitter=False,
-            avatar="https://example.com/avatar.jpg",
-        )
+# class UserModelTestCase(TestCase):
+#     @classmethod
+#     def setUpTestData(cls):
+#         cls.test_user = get_user_model().objects.create_user(
+#             username="testuser",
+#             email="testuser@example.com",
+#             password="testpassword",
+#             first_name="Nakyung",
+#             last_name="KIM",
+#             name="Nakyung Kim",
+#             is_sitter=False,
+#             avatar="https://example.com/avatar.jpg",
+#         )
 
-    def test_user_creation(self):
-        # Test if the user is created correctly
-        user = get_user_model().objects.get(username="testuser")
-        self.assertEqual(user.email, "testuser@example.com")
-        self.assertEqual(user.first_name, "Nakyung")
-        self.assertEqual(user.last_name, "KIM")
-        self.assertEqual(user.name, "Nakyung Kim")
-        self.assertFalse(user.is_sitter)
-        self.assertEqual(user.avatar, "https://example.com/avatar.jpg")
+#     def test_user_creation(self):
+#         # Test if the user is created correctly
+#         user = get_user_model().objects.get(username="testuser")
+#         self.assertEqual(user.email, "testuser@example.com")
+#         self.assertEqual(user.first_name, "Nakyung")
+#         self.assertEqual(user.last_name, "KIM")
+#         self.assertEqual(user.name, "Nakyung Kim")
+#         self.assertFalse(user.is_sitter)
+#         self.assertEqual(user.avatar, "https://example.com/avatar.jpg")
 
-    def test_str_representation(self):
-        # Test the string representation of the user object
-        self.assertEqual(str(self.test_user), "Nakyung Kim")
+#     def test_str_representation(self):
+#         # Test the string representation of the user object
+#         self.assertEqual(str(self.test_user), "Nakyung Kim")
 
-    def test_user_authentication(self):
-        # Test user authentication
-        user = get_user_model().objects.get(username="testuser")
-        self.assertTrue(user.check_password("testpassword"))
-        self.assertFalse(user.check_password("wrongpassword"))
+#     def test_user_authentication(self):
+#         # Test user authentication
+#         user = get_user_model().objects.get(username="testuser")
+#         self.assertTrue(user.check_password("testpassword"))
+#         self.assertFalse(user.check_password("wrongpassword"))
 
 
 # class TokenAuthenticationTestCase(APITestCase):

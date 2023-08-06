@@ -10,7 +10,20 @@ class UserAdmin(UserAdmin):
         (
             "Profile",
             {
-                "fields": ("username", "password", "name", "email", "is_sitter"),
+                "fields": (
+                    "username",
+                    "password",
+                    "name",
+                    "email",
+                    "is_sitter",
+                    "pet_name",
+                    "pet_gender",
+                    "pet_age",
+                    "pet_weight",
+                    "pet_breed",
+                    "neutering",
+                    "pet_description",
+                ),
             },
         ),
         (

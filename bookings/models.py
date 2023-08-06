@@ -28,13 +28,13 @@ class Booking(CommonModel):
         related_name="bookings",
     )
 
-    owner = models.ForeignKey(
-        "owners.Owner",
-        null=True,
-        blank=True,
-        on_delete=models.SET_NULL,
-        related_name="bookings",
-    )
+    # owner = models.ForeignKey(
+    #     "owners.Owner",
+    #     null=True,
+    #     blank=True,
+    #     on_delete=models.SET_NULL,
+    #     related_name="bookings",
+    # )
 
     # pet = models.ForeignKey(
     #     "owners.Pet",

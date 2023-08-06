@@ -3,12 +3,13 @@ from rest_framework import serializers
 from .models import Booking
 from common.serializers import BookingSitterSerializer
 from users.serializers import TinyUserSerializer, UserSerializer
-from owners.serializers import OwnerSerializer, OwnerDetailSerializer
+
+# from owners.serializers import OwnerSerializer, OwnerDetailSerializer
 
 
 class PublicBookingSerializer(serializers.ModelSerializer):
     user = UserSerializer(read_only=True)
-    owner = OwnerDetailSerializer(read_only=True)
+    # owner = OwnerDetailSerializer(read_only=True)
 
     class Meta:
         model = Booking
@@ -17,7 +18,7 @@ class PublicBookingSerializer(serializers.ModelSerializer):
             "check_in",
             "check_out",
             "user",
-            "owner",
+            # "owner",
         )
 
 

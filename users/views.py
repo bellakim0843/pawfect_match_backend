@@ -52,14 +52,15 @@ class Me(APIView):
 
     def put(self, request):
         user = request.user
+        new_user = user
         serializer = serializers.PrivateUserSerializer(
-            user,
+            new_user,
             data=request.data,
             partial=True,
         )
         if serializer.is_valid():
-            user = serializer.save()
-            serializer = serializers.PrivateUserSerializer(user)
+            new_user = serializer.save()
+            serializer = serializers.PrivateUserSerializer(new_user)
             return Response(serializer.data)
         else:
             return Response(serializer.errors)
@@ -117,7 +118,6 @@ class LogOut(APIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request):
-        sleep(5)
         logout(request)
         return Response({"ok": "bye!"})
 
@@ -201,3 +201,40 @@ class UserBookedSitters(APIView):
         )
         print(serializer.data)
         return Response(serializer.data)
+
+
+class UserDetailView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get_object(self, pk):
+        try:
+            return User.objects.get(pk=pk)
+        except User.DoesNotExist:
+            return None
+
+    def put(self, request):
+        user = request.user
+        serializer = serializers.PrivateUserSerializer(
+            user,
+            data=request.data,
+            partial=True,
+        )
+        if serializer.is_valid():
+            user = serializer.save()
+            serializer = serializers.PrivateUserSerializer(user)
+            return Response(serializer.data)
+        else:
+            return Response(
+                serializer.errors,
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+    def get(self, request, pk):
+        user = self.get_object(pk)
+        if user is not None:
+            serializer = UserSerializer(user)
+            return Response(serializer.data)
+        else:
+            return Response(
+                {"error": "User not found"}, status=status.HTTP_404_NOT_FOUND
+            )

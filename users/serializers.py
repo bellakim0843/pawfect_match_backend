@@ -21,6 +21,14 @@ class UserSerializer(ModelSerializer):
             "username",
             "name",
             "is_sitter",
+            "pk",
+            "pet_name",
+            "pet_gender",
+            "pet_age",
+            "pet_weight",
+            "pet_breed",
+            "neutering",
+            "pet_description",
         )
 
 

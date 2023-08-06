@@ -25,7 +25,6 @@ from .schema import schema
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("sitters/", include("sitters.urls")),
-    path("owners/", include("owners.urls")),
     path("categories/", include("categories.urls")),
     path("medias/", include("medias.urls")),
     path("users/", include("users.urls")),
